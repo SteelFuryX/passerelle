@@ -1,0 +1,501 @@
+/* =============================================================================
+   DASHBOARD THEME KIT — Système de style pour dashboards HTML
+   -----------------------------------------------------------------------------
+   Objectif : fournir une base visuelle "banque moderne / fintech" réutilisable
+   par les équipes data pour leurs dashboards HTML.
+
+   COMMENT UTILISER CE FICHIER
+   ---------------------------
+   1. Toute la charte se pilote depuis le bloc ":root" ci-dessous (les variables
+      CSS). Pour re-skinner un dashboard, tu ne touches QUE ce bloc.
+   2. Les valeurs de couleur ici sont des PLACEHOLDERS neutres, inspirés des
+      codes visuels du secteur bancaire. Remplace-les par les valeurs
+      officielles de ta charte interne (couleurs exactes, police maison, etc.).
+   3. Les sections plus bas (composants) utilisent ces variables : tu n'as
+      normalement pas besoin d'y toucher pour un simple changement de couleurs.
+
+   REPÈRES POUR L'INTÉGRATION
+   --------------------------
+   Chaque bloc est titré en MAJUSCULES et numéroté. Cherche "[SECTION X]" pour
+   naviguer vite.
+
+   [SECTION 1]  Variables (couleurs, typo, espacements, rayons, ombres)
+   [SECTION 2]  Base & reset léger
+   [SECTION 3]  Layout (grille, conteneurs)
+   [SECTION 4]  Barre de navigation / en-tête
+   [SECTION 5]  Filtres (sélecteurs de période, boutons)
+   [SECTION 6]  Cartes KPI (le grand chiffre + tendance)
+   [SECTION 7]  Zones graphiques (conteneurs pour tes charts)
+   [SECTION 8]  Tableaux de données
+   [SECTION 9]  Utilitaires (badges, pastilles, aides)
+   ============================================================================= */
+
+
+/* =============================================================================
+   [SECTION 1] — VARIABLES  ← LE SEUL BLOC À MODIFIER POUR RE-SKINNER
+   ============================================================================= */
+:root {
+
+  /* ---- 1.a COULEURS DE MARQUE ----------------------------------------------
+     Ce sont les couleurs "identité". Remplace par les codes exacts de ta
+     charte. Garde les noms de variables : tout le reste du fichier s'y réfère.
+     ------------------------------------------------------------------------- */
+  --couleur-primaire:        #0a7d6b;   /* Couleur principale (barres, titres, éléments forts) */
+  --couleur-primaire-foncee: #075a4d;   /* Variante foncée (survol, états actifs) */
+  --couleur-primaire-claire: #e6f4f1;   /* Variante très claire (fonds de zone, surlignage doux) */
+  --couleur-accent:          #c9a227;   /* Couleur d'accent secondaire (highlights, détails) */
+
+  /* ---- 1.b COULEURS SÉMANTIQUES (états) -------------------------------------
+     Pour les tendances, alertes, validations. Universelles, mais ajustables.
+     ------------------------------------------------------------------------- */
+  --couleur-succes:   #1f9d55;   /* Hausse positive, OK, validé (ex : +3,2 %) */
+  --couleur-danger:   #d64545;   /* Baisse, erreur, alerte (ex : -1,8 %) */
+  --couleur-neutre:   #6b7280;   /* Stable, info secondaire */
+  --couleur-info:     #2b6cb0;   /* Information, liens */
+
+  /* ---- 1.c COULEURS DE SURFACE / FOND (thème CLAIR) -------------------------- */
+  --fond-page:        #f4f6f8;   /* Fond général de la page */
+  --fond-carte:       #ffffff;   /* Fond des cartes, tableaux, zones */
+  --fond-survol:      #f0f3f6;   /* Fond au survol d'une ligne / élément */
+  --bordure:          #e2e8f0;   /* Bordures fines, séparateurs */
+  --bordure-forte:    #cbd5e1;   /* Bordures plus marquées */
+
+  /* ---- 1.d COULEURS DE TEXTE ------------------------------------------------- */
+  --texte-principal:  #1a202c;   /* Texte courant, titres */
+  --texte-secondaire: #5a6b7b;   /* Sous-titres, libellés, légendes */
+  --texte-attenue:    #94a3b8;   /* Texte discret, unités, méta-info */
+  --texte-sur-primaire: #ffffff; /* Texte posé sur un fond de couleur primaire */
+
+  /* ---- 1.e TYPOGRAPHIE ------------------------------------------------------
+     Remplace --police-principale par la police de ta charte si tu en as une
+     (web-font interne). Sinon la pile système ci-dessous est propre et rapide.
+     ------------------------------------------------------------------------- */
+  --police-principale: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --police-chiffres:   'Segoe UI', system-ui, sans-serif;  /* Pour les grands nombres ; une police à chasse fixe peut aider à l'alignement */
+
+  --taille-texte-xs:   0.75rem;   /* 12px — méta, unités */
+  --taille-texte-sm:   0.875rem;  /* 14px — libellés, légendes */
+  --taille-texte-base: 1rem;      /* 16px — texte courant */
+  --taille-texte-lg:   1.125rem;  /* 18px — sous-titres */
+  --taille-texte-xl:   1.5rem;    /* 24px — titres de section */
+  --taille-kpi:        2.25rem;   /* 36px — le grand chiffre des cartes KPI */
+
+  --graisse-normale:   400;
+  --graisse-moyenne:   600;
+  --graisse-forte:     700;
+
+  /* ---- 1.f ESPACEMENTS (échelle cohérente) ---------------------------------- */
+  --espace-xs:  0.25rem;   /* 4px  */
+  --espace-sm:  0.5rem;    /* 8px  */
+  --espace-md:  1rem;      /* 16px */
+  --espace-lg:  1.5rem;    /* 24px */
+  --espace-xl:  2rem;      /* 32px */
+
+  /* ---- 1.g RAYONS D'ARRONDI (coins) ----------------------------------------- */
+  --rayon-sm:   6px;    /* Petits éléments (badges, boutons) */
+  --rayon-md:   10px;   /* Cartes, zones */
+  --rayon-lg:   16px;   /* Grands conteneurs */
+
+  /* ---- 1.h OMBRES (profondeur douce, style fintech) ------------------------- */
+  --ombre-douce:   0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --ombre-moyenne: 0 4px 12px rgba(16, 24, 40, 0.08);
+  --ombre-forte:   0 8px 24px rgba(16, 24, 40, 0.12);
+
+  /* ---- 1.i DIVERS ------------------------------------------------------------ */
+  --largeur-max:   1440px;  /* Largeur maximale du contenu centré */
+  --transition:    all 0.15s ease;  /* Transition standard (survols) */
+}
+
+
+/* =============================================================================
+   [SECTION 2] — BASE & RESET LÉGER
+   Normalise le rendu sans tout casser. Volontairement minimal.
+   ============================================================================= */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--police-principale);
+  font-size: var(--taille-texte-base);
+  color: var(--texte-principal);
+  background: var(--fond-page);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;  /* Rendu de police plus net sur Mac/Chrome */
+}
+
+h1, h2, h3 { margin: 0; font-weight: var(--graisse-forte); line-height: 1.25; }
+a { color: var(--couleur-info); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+
+/* =============================================================================
+   [SECTION 3] — LAYOUT (grille & conteneurs)
+   ============================================================================= */
+
+/* Conteneur centré, largeur maximale maîtrisée */
+.dash-conteneur {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: var(--espace-lg);
+}
+
+/* Grille responsive : les enfants s'étalent et passent à la ligne tout seuls.
+   Utilise --min-colonne pour piloter la largeur minimale d'une tuile. */
+.dash-grille {
+  display: grid;
+  gap: var(--espace-lg);
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-colonne, 240px), 1fr));
+}
+
+/* Variante : 4 colonnes forcées sur grand écran (utile pour une rangée de KPI) */
+.dash-grille--kpi { --min-colonne: 220px; }
+
+/* Titre de section au-dessus d'un groupe de composants */
+.dash-titre-section {
+  font-size: var(--taille-texte-xl);
+  color: var(--texte-principal);
+  margin: var(--espace-xl) 0 var(--espace-md);
+}
+
+
+/* =============================================================================
+   [SECTION 4] — BARRE DE NAVIGATION / EN-TÊTE
+   ============================================================================= */
+.dash-navbar {
+  background: var(--fond-carte);
+  border-bottom: 1px solid var(--bordure);
+  box-shadow: var(--ombre-douce);
+}
+
+.dash-navbar__inner {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: var(--espace-md) var(--espace-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--espace-lg);
+}
+
+/* Emplacement du logo. Remplace le contenu par ton <img> de charte. */
+.dash-logo {
+  font-weight: var(--graisse-forte);
+  font-size: var(--taille-texte-lg);
+  color: var(--couleur-primaire);
+  display: flex;
+  align-items: center;
+  gap: var(--espace-sm);
+}
+
+/* Petit carré de couleur en guise de marque — à remplacer par le vrai logo */
+.dash-logo__marque {
+  width: 28px; height: 28px;
+  border-radius: var(--rayon-sm);
+  background: var(--couleur-primaire);
+}
+
+.dash-navbar__titre {
+  font-size: var(--taille-texte-lg);
+  font-weight: var(--graisse-moyenne);
+  color: var(--texte-principal);
+}
+
+/* Pousse ce qui suit vers la droite de la navbar */
+.dash-navbar__spacer { margin-left: auto; }
+
+/* Pastille utilisateur à droite */
+.dash-user {
+  display: flex; align-items: center; gap: var(--espace-sm);
+  color: var(--texte-secondaire);
+  font-size: var(--taille-texte-sm);
+}
+.dash-user__avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--couleur-primaire-claire);
+  color: var(--couleur-primaire);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: var(--graisse-forte);
+}
+
+
+/* =============================================================================
+   [SECTION 5] — FILTRES (sélecteurs de période, boutons)
+   ============================================================================= */
+.dash-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espace-sm);
+  padding: var(--espace-md) 0;
+}
+
+/* Libellé devant un groupe de filtres */
+.dash-filtres__label {
+  font-size: var(--taille-texte-sm);
+  color: var(--texte-secondaire);
+  margin-right: var(--espace-xs);
+}
+
+/* Bouton générique */
+.dash-btn {
+  font-family: inherit;
+  font-size: var(--taille-texte-sm);
+  font-weight: var(--graisse-moyenne);
+  color: var(--texte-secondaire);
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-sm);
+  padding: var(--espace-sm) var(--espace-md);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.dash-btn:hover {
+  background: var(--fond-survol);
+  border-color: var(--bordure-forte);
+}
+
+/* Bouton actif (période sélectionnée) */
+.dash-btn--actif {
+  background: var(--couleur-primaire);
+  color: var(--texte-sur-primaire);
+  border-color: var(--couleur-primaire);
+}
+.dash-btn--actif:hover {
+  background: var(--couleur-primaire-foncee);
+  border-color: var(--couleur-primaire-foncee);
+}
+
+/* Bouton principal (action forte, ex : Exporter) */
+.dash-btn--primaire {
+  background: var(--couleur-primaire);
+  color: var(--texte-sur-primaire);
+  border-color: var(--couleur-primaire);
+}
+.dash-btn--primaire:hover { background: var(--couleur-primaire-foncee); }
+
+/* Menu déroulant simple (sélecteur) */
+.dash-select {
+  font-family: inherit;
+  font-size: var(--taille-texte-sm);
+  color: var(--texte-principal);
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-sm);
+  padding: var(--espace-sm) var(--espace-md);
+  cursor: pointer;
+}
+
+
+/* =============================================================================
+   [SECTION 6] — CARTES KPI (le grand chiffre + tendance)
+   ============================================================================= */
+.kpi {
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-md);
+  padding: var(--espace-lg);
+  box-shadow: var(--ombre-douce);
+  transition: var(--transition);
+  /* Liseré de couleur à gauche pour la touche fintech (optionnel) */
+  border-left: 3px solid var(--couleur-primaire);
+}
+.kpi:hover { box-shadow: var(--ombre-moyenne); }
+
+/* Libellé du KPI (au-dessus du chiffre) */
+.kpi__libelle {
+  font-size: var(--taille-texte-sm);
+  color: var(--texte-secondaire);
+  font-weight: var(--graisse-moyenne);
+  margin-bottom: var(--espace-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Le grand chiffre */
+.kpi__valeur {
+  font-family: var(--police-chiffres);
+  font-size: var(--taille-kpi);
+  font-weight: var(--graisse-forte);
+  color: var(--texte-principal);
+  line-height: 1;
+}
+
+/* Unité ou devise collée au chiffre (ex : € , % , k) */
+.kpi__unite {
+  font-size: var(--taille-texte-lg);
+  color: var(--texte-attenue);
+  font-weight: var(--graisse-moyenne);
+  margin-left: var(--espace-xs);
+}
+
+/* Ligne de tendance sous le chiffre */
+.kpi__tendance {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espace-xs);
+  font-size: var(--taille-texte-sm);
+  font-weight: var(--graisse-moyenne);
+  margin-top: var(--espace-sm);
+}
+.kpi__tendance--hausse { color: var(--couleur-succes); }
+.kpi__tendance--baisse { color: var(--couleur-danger); }
+.kpi__tendance--stable { color: var(--couleur-neutre); }
+
+/* Petite flèche de tendance (caractère unicode, pas d'image à charger) */
+.kpi__fleche { font-size: var(--taille-texte-base); }
+
+
+/* =============================================================================
+   [SECTION 7] — ZONES GRAPHIQUES (conteneurs pour tes charts)
+   On style le CADRE, pas le graphique lui-même (libre à toi : Chart.js, etc.).
+   ============================================================================= */
+.graph {
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-md);
+  box-shadow: var(--ombre-douce);
+  padding: var(--espace-lg);
+}
+
+/* En-tête de la zone graphique : titre à gauche, actions à droite */
+.graph__entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espace-lg);
+}
+.graph__titre {
+  font-size: var(--taille-texte-lg);
+  font-weight: var(--graisse-moyenne);
+  color: var(--texte-principal);
+}
+.graph__sous-titre {
+  font-size: var(--taille-texte-sm);
+  color: var(--texte-attenue);
+  margin-top: var(--espace-xs);
+}
+
+/* Emplacement du graphique. Donne une hauteur pour que le canvas s'affiche. */
+.graph__zone {
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--texte-attenue);
+  /* Fond en damier léger = "ici viendra le graphique" (à retirer en prod) */
+  background:
+    linear-gradient(var(--fond-survol) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fond-survol) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border-radius: var(--rayon-sm);
+}
+
+/* Légende sous un graphique */
+.graph__legende {
+  display: flex; flex-wrap: wrap; gap: var(--espace-md);
+  margin-top: var(--espace-md);
+  font-size: var(--taille-texte-sm);
+  color: var(--texte-secondaire);
+}
+.graph__legende-item { display: flex; align-items: center; gap: var(--espace-xs); }
+.graph__puce {
+  width: 12px; height: 12px; border-radius: 3px;
+  display: inline-block;
+}
+
+
+/* =============================================================================
+   [SECTION 8] — TABLEAUX DE DONNÉES
+   ============================================================================= */
+.tableau-wrap {
+  background: var(--fond-carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-md);
+  box-shadow: var(--ombre-douce);
+  overflow: hidden;   /* pour que les coins arrondis "rognent" le tableau */
+}
+
+/* En-tête du bloc tableau (titre + éventuelle action) */
+.tableau-entete {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--espace-md) var(--espace-lg);
+  border-bottom: 1px solid var(--bordure);
+}
+.tableau-entete__titre {
+  font-size: var(--taille-texte-lg);
+  font-weight: var(--graisse-moyenne);
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--taille-texte-sm);
+}
+
+/* En-têtes de colonnes */
+.tableau thead th {
+  text-align: left;
+  padding: var(--espace-md) var(--espace-lg);
+  color: var(--texte-secondaire);
+  font-weight: var(--graisse-moyenne);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: var(--taille-texte-xs);
+  background: var(--fond-page);
+  border-bottom: 1px solid var(--bordure);
+  white-space: nowrap;
+}
+
+/* Cellules */
+.tableau tbody td {
+  padding: var(--espace-md) var(--espace-lg);
+  border-bottom: 1px solid var(--bordure);
+  color: var(--texte-principal);
+}
+
+/* Lignes alternées (zébrage léger) */
+.tableau tbody tr:nth-child(even) { background: var(--fond-page); }
+
+/* Survol de ligne */
+.tableau tbody tr:hover { background: var(--fond-survol); }
+
+/* Dernière ligne sans bordure */
+.tableau tbody tr:last-child td { border-bottom: none; }
+
+/* Colonne de chiffres alignée à droite (bonne pratique pour les montants) */
+.tableau .num {
+  text-align: right;
+  font-family: var(--police-chiffres);
+  font-variant-numeric: tabular-nums;  /* chiffres de largeur égale = alignement propre */
+}
+
+
+/* =============================================================================
+   [SECTION 9] — UTILITAIRES (badges, pastilles)
+   ============================================================================= */
+
+/* Badge d'état (ex : "Actif", "En attente") */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espace-xs);
+  font-size: var(--taille-texte-xs);
+  font-weight: var(--graisse-moyenne);
+  padding: 2px var(--espace-sm);
+  border-radius: 999px;   /* pilule */
+}
+.badge--succes { background: #e6f6ec; color: var(--couleur-succes); }
+.badge--danger { background: #fbeaea; color: var(--couleur-danger); }
+.badge--neutre { background: #eef1f4; color: var(--couleur-neutre); }
+.badge--info   { background: #e7f0f9; color: var(--couleur-info); }
+
+/* Pastille ronde de couleur (ex : devant un libellé de série) */
+.pastille {
+  width: 10px; height: 10px; border-radius: 50%;
+  display: inline-block;
+}
+
+/* Petites aides d'espacement (si besoin ponctuel) */
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.texte-secondaire { color: var(--texte-secondaire); }
+.texte-attenue   { color: var(--texte-attenue); }
