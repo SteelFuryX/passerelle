@@ -1,5 +1,0 @@
-=== TEST PASSERELLE ===
-Généré le : 2026-11-04 à 13:43 (heure de Paris)
-Message : Si tu lis ceci depuis ton poste BNP, la passerelle fonctionne !
-Code secret du jour : TARTIFLETTE-777
-========================
